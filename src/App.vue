@@ -1,20 +1,28 @@
 <template>
   <div id="app">
-    <AppTemplate applicationName="Reverse shell dashboard"/>
+    <RouterView></RouterView>
   </div>
 </template>
 
 <script>
-import AppTemplate from '@/components/vue_application_template/AppTemplate.vue'
+// import AppTemplate from "@moreillon/vue_application_template"
+// import { RouterView } from "vue-router"
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    AppTemplate
+    // AppTemplate,
+  },
+  data() {
+    return {
+      options: {
+        title: "Reverse shell UI",
+      },
+    }
   },
   methods: {
-    sendCommand(client){
+    sendCommand(client) {
       this.$socket.client.emit("new_command", client)
-    }
+    },
   },
   sockets: {
     connect() {
@@ -24,27 +32,22 @@ export default {
       console.log("[WS] connected")
     },
     request(payload) {
-      this.$store.commit('request', payload)
+      this.$store.commit("request", payload)
     },
-    response(payload){
-      this.$store.commit('response', payload)
-    }
-  }
+    response(payload) {
+      this.$store.commit("response", payload)
+    },
+  },
 }
 </script>
 
 <style>
-
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
 }
-
 </style>
 
-
-<style>
-
-</style>
+<style></style>

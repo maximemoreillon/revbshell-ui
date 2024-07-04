@@ -1,28 +1,29 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import ClientList from '../views/ClientList.vue'
-import Terminal from '../views/Terminal.vue'
+import Vue from "vue"
+import VueRouter from "vue-router"
+// import ClientList from "../views/ClientList.vue"
+// import Terminal from "../views/Terminal.vue"
+import Client from "../views/Client.vue"
+import Clients from "../views/Clients.vue"
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'client_list',
-    component: ClientList
+    path: "/clients",
+    name: "clients",
+    component: Clients,
   },
   {
-    path: '/terminal',
-    name: 'terminal',
-    component: Terminal,
-    props: true,
+    path: "/clients/:username",
+    name: "client",
+    component: Client,
   },
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 })
 
 export default router
