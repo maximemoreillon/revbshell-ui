@@ -1,53 +1,38 @@
 <template>
-  <div id="app">
-    <RouterView></RouterView>
-  </div>
+  <v-app>
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<script>
-// import AppTemplate from "@moreillon/vue_application_template"
-// import { RouterView } from "vue-router"
-export default {
-  name: "app",
-  components: {
-    // AppTemplate,
-  },
-  data() {
-    return {
-      options: {
-        title: "Reverse shell UI",
-      },
-    }
-  },
-  methods: {
-    sendCommand(client) {
-      this.$socket.client.emit("new_command", client)
-    },
-  },
-  sockets: {
-    connect() {
-      console.log("[WS] connected")
-    },
-    disconnect() {
-      console.log("[WS] connected")
-    },
-    request(payload) {
-      this.$store.commit("request", payload)
-    },
-    response(payload) {
-      this.$store.commit("response", payload)
-    },
-  },
-}
+<script lang="ts" setup>
+import { socket } from "@/io";
+import { useAppStore } from "@/stores/app";
+import { type Client } from "@/stores/app";
+const appStore = useAppStore();
+
+onMounted(() => {
+  socket.on("client", (client) => {
+    const { username } = client;
+    let foundClient = appStore.clients.find((c) => c.username === username);
+    if (!foundClient) appStore.clients.push(client);
+    else foundClient = client;
+  });
+  socket.on("response", (payload) => {
+    const { username, response } = payload;
+    const foundClient: Client | undefined = appStore.clients.find(
+      (c) => c.username === username
+    );
+    if (!foundClient) return;
+    if (!foundClient.history || foundClient.history.length < 1) return;
+
+    foundClient.history[foundClient.history.length - 1].response = response;
+  });
+});
+
+onBeforeUnmount(() => {
+  socket.off("client");
+  socket.off("response");
+});
 </script>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-}
-</style>
-
-<style></style>
