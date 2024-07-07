@@ -25,10 +25,7 @@
       </div>
 
       <!-- Command input -->
-      <form
-        class="terminal_input_form"
-        v-on:submit.prevent="sendCommand(client)"
-      >
+      <form class="terminal_input_form" @:submit.prevent="sendCommand()">
         <span>></span>
         <input type="text" ref="terminalInput" v-model="command" />
         <input type="submit" style="display: none" />
