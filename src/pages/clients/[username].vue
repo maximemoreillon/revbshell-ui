@@ -45,6 +45,7 @@
 <script lang="ts" setup>
 import { useAppStore } from "@/stores/app";
 import { socket } from "@/io";
+import { type Client } from "@/stores/app";
 
 const route = useRoute();
 const appStore = useAppStore();
@@ -54,7 +55,7 @@ const terminal = ref();
 const terminalInput = ref();
 
 const client = computed(() =>
-  appStore.clients.find((c) => c.username === route.params.username)
+  appStore.clients.find((c: Client) => c.username === route.params.username)
 );
 
 const lastHistoryItem = computed(() => client.value?.history?.at(-1));
@@ -78,7 +79,7 @@ function sendCommand() {
   if (waitingForResponse.value) return;
 
   const client = appStore.clients.find(
-    (c) => c.username === route.params.username
+    (c: Client) => c.username === route.params.username
   );
   if (!client) return;
   if (!client.history) client.history = [];
