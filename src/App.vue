@@ -8,26 +8,28 @@
 
 <script lang="ts" setup>
 import { socket } from "@/io";
-import { useAppStore } from "@/stores/app";
-import { type Client } from "@/stores/app";
+import { type Client, useAppStore } from "@/stores/app";
 const appStore = useAppStore();
 
 onMounted(() => {
   socket.on("client", (client) => {
+    client.lastSeen = new Date();
     const { username } = client;
-    let foundClient = appStore.clients.find((c) => c.username === username);
-    if (!foundClient) appStore.clients.push(client);
-    else foundClient = client;
+    let foundClientIndex = appStore.clients.findIndex(
+      (c) => c.username === username
+    );
+    if (foundClientIndex < 0) appStore.clients.push(client);
+    else appStore.clients[foundClientIndex] = client;
   });
   socket.on("response", (payload) => {
-    const { username, response } = payload;
+    const { username, output } = payload;
     const foundClient: Client | undefined = appStore.clients.find(
       (c) => c.username === username
     );
     if (!foundClient) return;
     if (!foundClient.history || foundClient.history.length < 1) return;
 
-    foundClient.history[foundClient.history.length - 1].response = response;
+    foundClient.history[foundClient.history.length - 1].response = output;
   });
 });
 
