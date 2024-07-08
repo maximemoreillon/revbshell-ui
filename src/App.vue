@@ -19,7 +19,11 @@ onMounted(() => {
       (c) => c.username === username
     );
     if (foundClientIndex < 0) appStore.clients.push(client);
-    else appStore.clients[foundClientIndex] = client;
+    else
+      appStore.clients[foundClientIndex] = {
+        ...appStore.clients[foundClientIndex],
+        ...client,
+      };
   });
   socket.on("response", (payload) => {
     const { username, output } = payload;
