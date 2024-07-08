@@ -3,7 +3,10 @@
     <v-toolbar>
       <v-btn icon="mdi-arrow-left" to="/clients" exact />
       <v-toolbar-title>
-        {{ route.params.username }}
+        {{
+          // @ts-ignore
+          route.params.username
+        }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-col cols="auto">
@@ -57,6 +60,7 @@ const terminal = ref();
 const terminalInput = ref();
 
 const client = computed(() =>
+  // @ts-ignore
   appStore.clients.find((c: Client) => c.username === route.params.username)
 );
 
@@ -81,6 +85,7 @@ function sendCommand() {
   if (waitingForResponse.value) return;
 
   const client = appStore.clients.find(
+    // @ts-ignore
     (c: Client) => c.username === route.params.username
   );
   if (!client) return;

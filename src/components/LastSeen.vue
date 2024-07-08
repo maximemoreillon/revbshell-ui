@@ -11,5 +11,6 @@ const curTime = ref(new Date());
 setInterval(() => {
   curTime.value = new Date();
 });
+// @ts-ignore
 const timeSinceLastSeen = computed(() => curTime.value - props.client.lastSeen);
 </script>
