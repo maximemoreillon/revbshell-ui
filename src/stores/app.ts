@@ -5,7 +5,7 @@ export type Client = {
   username: string;
   history: {
     command: string;
-    response: string;
+    response?: string;
   }[];
   lastSeen: Date;
 };

@@ -52,7 +52,7 @@ import { type Client } from "@/stores/app";
 const route = useRoute();
 const appStore = useAppStore();
 
-const command = ref("");
+const command = ref();
 const terminal = ref();
 const terminalInput = ref();
 
@@ -96,10 +96,22 @@ function sendCommand() {
   });
 
   command.value = "";
-
-  // TODO: scroll
-  // setTimeout(() => {}, 10);
 }
+
+function handle_keydown(e: KeyboardEvent) {
+  if (e.keyCode === 38) {
+    e.preventDefault();
+    command.value = client.value?.history?.at(-1)?.command;
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("keydown", handle_keydown);
+});
+
+onBeforeMount(() => {
+  document.removeEventListener("keydown", handle_keydown);
+});
 </script>
 
 <style scoped>
