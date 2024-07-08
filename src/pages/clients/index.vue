@@ -6,6 +6,9 @@
           <ClientPreview :client="client" />
         </v-col>
       </v-row>
+      <v-row v-if="!appStore.clients.length">
+        <v-col> No client available </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>

@@ -5,6 +5,11 @@
       <v-toolbar-title>
         {{ route.params.username }}
       </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-col cols="auto">
+        <LastSeen :client="client" v-if="client" />
+      </v-col>
+      <v-toolbar-items> </v-toolbar-items>
     </v-toolbar>
     <div
       class="terminal"
